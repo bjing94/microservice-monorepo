@@ -2,9 +2,9 @@ export enum UserRole {
   Teacher = 'Teacher',
   Student = 'Studen',
 }
-export interface User {
+export interface AbstractUser {
   _id?: string;
-  displayName: string;
+  displayName?: string;
   email: string;
   passwordHash: string;
   role: UserRole;
