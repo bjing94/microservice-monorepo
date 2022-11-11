@@ -10,7 +10,12 @@ export class UserModel extends Document implements AbstractUser {
   email: string;
   @Prop({ required: true })
   passwordHash: string;
-  @Prop({ required: true, enum: UserRole, default: UserRole.Student })
+  @Prop({
+    required: true,
+    type: String,
+    enum: UserRole,
+    default: UserRole.Student,
+  })
   role: UserRole;
 }
 
