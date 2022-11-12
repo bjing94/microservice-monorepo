@@ -7,6 +7,7 @@ export const getRMQConfig = (): IRMQServiceAsyncOptions => ({
   useFactory: (configService: ConfigService) => ({
     exchangeName: configService.get('AMQP_EXCHANGE') ?? '',
     serviceName: 'exchange-service',
+    queueName: 'auth-queue',
     connections: [
       {
         login: configService.get('AMQP_USER') ?? '',

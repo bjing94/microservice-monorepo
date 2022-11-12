@@ -7,6 +7,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import getJwtConfiguration from './configs/jwt.config';
 import { getRMQConfig } from './configs/rmq.config';
+import { AuthController } from './controllers/auth.controller';
+import { UserController } from './controllers/user.controller';
 
 @Module({
   imports: [
@@ -14,7 +16,7 @@ import { getRMQConfig } from './configs/rmq.config';
     RMQModule.forRootAsync(getRMQConfig()),
     JwtModule.registerAsync(getJwtConfiguration()),
   ],
-  controllers: [AppController],
+  controllers: [AppController, AuthController, UserController],
   providers: [AppService],
 })
 export class AppModule {}

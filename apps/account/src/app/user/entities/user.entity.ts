@@ -13,6 +13,8 @@ export class UserEntity implements AbstractUser {
     this._id = user._id;
     this.displayName = user.displayName;
     this.email = user.email;
+    this.passwordHash = user.passwordHash;
+
     if (!user.role) {
       this.role = UserRole.Student;
     }

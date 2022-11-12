@@ -7,15 +7,17 @@ import { RMQRoute, RMQValidate } from 'nestjs-rmq';
 export class AuthController {
   constructor(private readonly authSerivce: AuthService) {}
 
-  @RMQRoute(AccountLogin.topic)
+  @RMQRoute(AccountRegister.topic)
   @RMQValidate()
   async register(
     @Body() dto: AccountRegister.Request
   ): Promise<AccountRegister.Response> {
+    console.log('Registering user', dto);
     return this.authSerivce.register(dto);
   }
 
-  @RMQRoute(AccountRegister.topic)
+  @RMQRoute(AccountLogin.topic)
+  @RMQValidate()
   async login(
     @Body() { email, password }: AccountLogin.Request
   ): Promise<AccountLogin.Response> {

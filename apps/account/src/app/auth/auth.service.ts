@@ -33,12 +33,13 @@ export default class AuthService {
     if (!user) {
       throw new BadRequestException('User doesnt exist');
     }
+    console.log(user);
     const userEntity = new UserEntity(user);
-
     const passwordCorrect = await userEntity.validatePassword(password);
     if (!passwordCorrect) {
       throw new BadRequestException('User doesnt exist');
     }
+
     return { id: user._id };
   }
 

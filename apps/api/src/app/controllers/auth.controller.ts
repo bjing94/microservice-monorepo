@@ -18,6 +18,7 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   @Post('register')
   async register(@Body() dto: RegisterDto) {
+    console.log('Registering user', dto);
     try {
       return await this.rmqService.send<
         AccountRegister.Request,
@@ -33,6 +34,7 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   @Post('login')
   async login(@Body() dto: LoginDto) {
+    console.log('Login with', dto);
     try {
       return await this.rmqService.send<
         AccountLogin.Request,
