@@ -1,4 +1,8 @@
-import { AbstractUser, UserRole } from '@purple/interfaces';
+import {
+  AbstractUser,
+  AbstractUserCourses,
+  UserRole,
+} from '@purple/interfaces';
 import { compare, genSalt, hash } from 'bcryptjs';
 import { Hash } from 'crypto';
 
@@ -8,17 +12,20 @@ export class UserEntity implements AbstractUser {
   email: string;
   passwordHash: string;
   role: UserRole;
+  courses?: AbstractUserCourses[];
 
   constructor(user: Partial<AbstractUser>) {
     this._id = user._id;
     this.displayName = user.displayName;
     this.email = user.email;
     this.passwordHash = user.passwordHash;
+    this.courses = user.courses;
 
     if (!user.role) {
       this.role = UserRole.Student;
     }
     this.role = user.role;
+    return this;
   }
 
   public async setPassword(password: string) {
@@ -29,5 +36,10 @@ export class UserEntity implements AbstractUser {
 
   public validatePassword(password: string) {
     return compare(password, this.passwordHash);
+  }
+
+  public updateProfile(displayName: string) {
+    this.displayName = displayName;
+    return this;
   }
 }

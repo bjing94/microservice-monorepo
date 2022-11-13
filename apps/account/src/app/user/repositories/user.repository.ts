@@ -13,8 +13,16 @@ export class UserRepository {
     return newUser.save();
   }
 
+  update({ _id, ...rest }: UserEntity) {
+    return this.userModel.updateOne({ _id }, rest);
+  }
+
   findUser(email: string) {
     return this.userModel.findOne({ email: email }).exec();
+  }
+
+  findUserById(id: string) {
+    return this.userModel.findOne({ id }).exec();
   }
 
   async deleteUser(email: string) {
