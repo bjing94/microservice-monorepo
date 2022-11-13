@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { AbstractUser } from '@purple/interfaces';
+import { UserRole } from '@purple/interfaces';
 
 export namespace AccountUserInfo {
   export const topic = 'account.user-info.query';
@@ -10,6 +10,10 @@ export namespace AccountUserInfo {
   }
 
   export class Response {
-    user: Omit<AbstractUser, 'passwordHash'>;
+    profile: {
+      email: string;
+      role: UserRole;
+      displayName: string;
+    };
   }
 }

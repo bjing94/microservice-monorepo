@@ -1,6 +1,7 @@
 import { Body, Controller } from '@nestjs/common';
 import { AccountUserCourses, AccountUserInfo } from '@purple/contracts';
 import { RMQRoute, RMQValidate } from 'nestjs-rmq';
+import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from '../repositories/user.repository';
 
 // Query asks for special view of data
@@ -14,8 +15,8 @@ export default class UserQueryController {
     @Body() { id }: AccountUserInfo.Request
   ): Promise<AccountUserInfo.Response> {
     const user = await this.userRepository.findUserById(id);
-
-    return { user };
+    const profile = new UserEntity(user).getUserPublicProfile();
+    return { profile };
   }
 
   @RMQValidate()

@@ -1,5 +1,9 @@
 import { Body, Controller } from '@nestjs/common';
-import { AccountChangeProfile } from '@purple/contracts';
+import {
+  AccountBuyCourse,
+  AccountChangeProfile,
+  AccountCheckPayment,
+} from '@purple/contracts';
 import { RMQRoute, RMQValidate } from 'nestjs-rmq';
 import { UserRepository } from '../repositories/user.repository';
 import UserService from '../services/user.service';
@@ -17,6 +21,26 @@ export default class UserCommandController {
   async userInfo(
     @Body() dto: AccountChangeProfile.Request
   ): Promise<AccountChangeProfile.Response> {
+    const user = await this.userService.update(dto);
+
+    return {};
+  }
+
+  @RMQValidate()
+  @RMQRoute(AccountBuyCourse.topic)
+  async buyCourse(
+    @Body() { userId, courseId }: AccountBuyCourse.Request
+  ): Promise<AccountBuyCourse.Response> {
+    const user = await this.userService.update(dto);
+
+    return {};
+  }
+
+  @RMQValidate()
+  @RMQRoute(AccountCheckPayment.topic)
+  async buyCourse(
+    @Body() { userId, courseId }: AccountCheckPayment.Request
+  ): Promise<AccountCheckPayment.Response> {
     const user = await this.userService.update(dto);
 
     return {};

@@ -1,6 +1,7 @@
 import {
   AbstractUser,
   AbstractUserCourses,
+  PurchaseState,
   UserRole,
 } from '@purple/interfaces';
 import { compare, genSalt, hash } from 'bcryptjs';
@@ -40,6 +41,61 @@ export class UserEntity implements AbstractUser {
 
   public updateProfile(displayName: string) {
     this.displayName = displayName;
+    return this;
+  }
+
+  public getUserPublicProfile() {
+    return {
+      email: this.email,
+      role: this.role,
+      displayName: this.displayName,
+    };
+  }
+
+  public addCourse(courseId: string) {
+    this.courses = this.courses ?? [];
+    const exist = this.courses.find((c) => c.courseId === courseId);
+    if (exist) {
+      throw new Error('Course already exists');
+    }
+
+    this.courses.push({
+      courseId,
+      purchaseState: PurchaseState.Started,
+    });
+    return this;
+  }
+
+  public deleteCourse(courseId: string) {
+    this.courses = this.courses ?? [];
+    const idx = this.courses.findIndex((c) => c.courseId === courseId);
+    if (idx === -1) {
+      throw new Error('Course doesnt exist');
+    }
+
+    this.courses = this.courses.splice(idx, 1);
+    return this;
+  }
+
+  public setCourseStatus(courseId: string, state: PurchaseState) {
+    const exist = this.courses.find((c) => c.courseId === courseId);
+    if (!exist) {
+      this.courses.push({
+        courseId,
+        purchaseState: PurchaseState.Started,
+      });
+      return this;
+    }
+    if (state === PurchaseState.Canceled) {
+      this.courses = this.courses.filter((c) => c.courseId !== courseId);
+      return this;
+    }
+    this.courses = this.courses.map((c) => {
+      if (c.courseId === courseId) {
+        c.purchaseState = state;
+      }
+      return c;
+    });
     return this;
   }
 }
